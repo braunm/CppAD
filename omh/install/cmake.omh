@@ -1,6 +1,6 @@
 $Id$
 /* --------------------------------------------------------------------------
-CppAD: C++ Algorithmic Differentiation: Copyright (C) 2003-14 Bradley M. Bell
+CppAD: C++ Algorithmic Differentiation: Copyright (C) 2003-15 Bradley M. Bell
 
 CppAD is distributed under multiple licenses. This distribution is under
 the terms of the
@@ -77,7 +77,9 @@ $index cmake, command$$
 $index configure, cppad$$
 $index cppad, configure$$
 The command below assumes that $code cmake$$ is in your execution
-path. If not, you can put the path to $code cmake$$ in font the command.
+path with version greater than or equal 2.8.
+If not, you can put the path to the version of $code cmake$$
+in font the command.
 Only the $code cmake$$ command and the path to the distribution directory
 ($code ..$$ at the end of the command below) are required.
 In other words, the first and last lines below are required
@@ -262,12 +264,18 @@ These flags must be valid for the C++ compiler
 on your system.
 For example, if you are using $code g++$$ you could specify
 $codep
-	-D cppad_cxx_flags="-Wall -ansi -pedantic-errors -std=c++98 -Wshadow"
+	-D cppad_cxx_flags="-Wall -ansi -pedantic-errors -std=c++11 -Wshadow"
 $$
+$subhead C++11$$
+In order for the compiler to take advantage of features that are new in C++11,
+the $icode cppad_cxx_flags$$ must enable these features.
+The compiler may still be used with a flag that disables the new features.
+
+$subhead Eigen and Fadbad$$
 The packages
 $cref/eigen/eigen_prefix/$$ and $cref/fadbad/fadbad_prefix/$$
 currently generate a lot of shadowed variable warnings.
-Hence the $code -Wshadow$$ flag is automatically removed when
+If the $code -Wshadow$$ flag is present, it is automatically removed when
 compiling examples and test that use these packages.
 
 $head cppad_testvector$$

@@ -4,7 +4,7 @@
 # if CPPAD_COMPILER_HAS_ERF
 
 /* --------------------------------------------------------------------------
-CppAD: C++ Algorithmic Differentiation: Copyright (C) 2003-14 Bradley M. Bell
+CppAD: C++ Algorithmic Differentiation: Copyright (C) 2003-15 Bradley M. Bell
 
 CppAD is distributed under multiple licenses. This distribution is under
 the terms of the
@@ -105,7 +105,7 @@ inline void forward_erf_op(
 	const Base*   parameter   ,
 	size_t        cap_order   ,
 	Base*         taylor      )
-{	
+{
 	// check assumptions
 	CPPAD_ASSERT_UNKNOWN( NumArg(ErfOp) == 3 );
 	CPPAD_ASSERT_UNKNOWN( NumRes(ErfOp) == 5 );
@@ -250,7 +250,7 @@ inline void forward_erf_op_0(
 
 	// zero order Taylor coefficient for z_4
 	Base* x    = taylor + arg[0]  * cap_order;
-	Base* z_4  = taylor + i_z + 4 * cap_order;
+	Base* z_4  = taylor + (i_z + 4) * cap_order;
 	z_4[0] = erf(x[0]);
 }
 
@@ -351,7 +351,7 @@ inline void reverse_erf_op(
 	const Base*   taylor      ,
 	size_t        nc_partial  ,
 	Base*         partial     )
-{	
+{
 	// check assumptions
 	CPPAD_ASSERT_UNKNOWN( NumArg(ErfOp) == 3 );
 	CPPAD_ASSERT_UNKNOWN( NumRes(ErfOp) == 5 );

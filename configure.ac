@@ -5,7 +5,7 @@ dnl
 dnl CppAD is distributed under multiple licenses. This distribution is under
 dnl the terms of the
 dnl                     Eclipse Public License Version 1.0.
-dnl 
+dnl
 dnl A copy of this license is included in the COPYING file of this distribution.
 dnl Please visit http://www.coin-or.org/CppAD/ for information on other licenses.
 dnl ---------------------------------------------------------------------------
@@ -26,17 +26,24 @@ AC_PREFIX_DEFAULT(${HOME})
 dnl cygwin end delete:
 dnl cygwin replace: AC_PREFIX_DEFAULT(/usr)
 
-dnl --------------------------------------------------------------------------
-dnl Check for programs
+dnl Run any macros required for proper operation of generated makefiles
+dnl nostdinc: Do not define standard include directories in generated makefiles
+dnl Note this must come before AC_PROG_CC; see
+dnl http://lists.gnu.org/archive/html/automake/2010-08/msg00113.html
+AM_INIT_AUTOMAKE([nostdinc subdir-objects -Wall])
 
+dnl --------------------------------------------------------------------------
+dnl Check if this system has pkgconfig
 AC_CHECK_PROG(have_pkg_config, [pkg-config], [yes], [no])
 AM_CONDITIONAL(CppAD_PKG_CONFIG, test "$have_pkg_config" = "yes")
 
+dnl --------------------------------------------------------------------------
+dnl Check if this system has ar
 AM_PROG_AR()
 AM_CONDITIONAL(CppAD_HAVE_AR, test "$AR" = "ar")
 if test "$AR" != "ar"; then
 	AC_MSG_WARN(
-	[cannot build any libraries because ar is missing; e.g,, speed/* not built] 
+	[cannot build any libraries because ar is missing; e.g,, speed/* not built]
 	)
 fi
 
@@ -62,7 +69,7 @@ AC_ARG_WITH(profiling, AC_HELP_STRING(
 if test "$profiling" = "yes" ; then
     AC_MSG_ERROR([--with-profiling not necessary, see install instructions.])
 fi
-dnl 
+dnl
 AC_ARG_WITH(Speed, AC_HELP_STRING(
 	[--with-Speed], [is not necessary, see install instructions.]),
 	[Speed="yes"], [Speed="no"]
@@ -70,7 +77,7 @@ AC_ARG_WITH(Speed, AC_HELP_STRING(
 if test "$Speed" = "yes" ; then
     AC_MSG_ERROR([--with-Speed not necessary, see install instructions.])
 fi
-dnl 
+dnl
 AC_ARG_WITH(Introduction, AC_HELP_STRING(
 	[--with-Introduction], [is not necessary, see install instructions.]),
 	[Introduction="yes"], [Introduction="no"]
@@ -78,7 +85,7 @@ AC_ARG_WITH(Introduction, AC_HELP_STRING(
 if test "$Introduction" = "yes" ; then
     AC_MSG_ERROR([--with-Introduction not necessary, see install instructions.])
 fi
-dnl 
+dnl
 AC_ARG_WITH(Example, AC_HELP_STRING(
 	[--with-Example], [is not necessary, see install instructions.]),
 	[Example="yes"], [Example="no"]
@@ -86,7 +93,7 @@ AC_ARG_WITH(Example, AC_HELP_STRING(
 if test "$Example" = "yes" ; then
     AC_MSG_ERROR([--with-Example not necessary, see install instructions.])
 fi
-dnl 
+dnl
 AC_ARG_WITH(TestMore, AC_HELP_STRING(
 	[--with-TestMore], [is not necessary, see install instructions.]),
 	[TestMore="yes"], [TestMore="no"]
@@ -94,7 +101,7 @@ AC_ARG_WITH(TestMore, AC_HELP_STRING(
 if test "$TestMore" = "yes" ; then
     AC_MSG_ERROR([--with-TestMore not necessary, see install instructions.])
 fi
-dnl 
+dnl
 AC_ARG_WITH(PrintFor, AC_HELP_STRING(
 	[--with-PrintFor], [is not necessary, see install instructions.]),
 	[PrintFor="yes"], [PrintFor="no"]
@@ -104,6 +111,18 @@ if test "$PrintFor" = "yes" ; then
 fi
 dnl --------------------------------------------------------------------------
 AC_MSG_NOTICE([******  Check command line arguments that are used ***********])
+dnl ------------------------------------------------------------------------
+dnl Command line argument requested by Coin-or.
+dnl The case "$enable_msvc == yes" is defined and supported by Ted Ralphs.
+AC_MSG_CHECKING([--enable-msvc])
+AC_ARG_ENABLE([msvc],
+  [AC_HELP_STRING([--enable-msvc],
+                  [Prefer (i)cl/ifort/link over GNU on MinGW/Cygwin.])],
+  [enable_msvc=$enableval],
+  [enable_msvc=no]
+)
+AC_MSG_RESULT([$enable_msvc])
+
 dnl the prefix directory corresponding to CppAD -------------------------
 dnl The following seems to work but NONE is not in autoconf specifications
 AC_MSG_CHECKING([--prefix])
@@ -113,10 +132,11 @@ else
 	AC_MSG_RESULT([$prefix])
 fi
 
+
 dnl Are we installing the documentation -----------------------------------
 dnl cygwin begin delete:
 AC_MSG_CHECKING([--with-Documentation])
-AC_ARG_WITH(Documentation, 
+AC_ARG_WITH(Documentation,
 	AC_HELP_STRING([--with-Documentation], [default is no]),
 	[Documentation="yes"],
 	[Documentation="no"]
@@ -128,7 +148,7 @@ dnl cygwin replace: AM_CONDITIONAL(CppAD_DOCUMENTATION, test "yes" = "yes")
 
 dnl Are we using standard vectors ----------------------------------------
 AC_MSG_CHECKING([--with-stdvector])
-AC_ARG_WITH(stdvector, 
+AC_ARG_WITH(stdvector,
 	AC_HELP_STRING([--with-stdvector], [default is no]),
 	[stdvector="yes"],
 	[stdvector="no"]
@@ -142,7 +162,7 @@ AC_MSG_RESULT([$stdvector])
 
 dnl Are we using boost vectors ----------------------------------------
 AC_MSG_CHECKING([--with-boostvector])
-AC_ARG_WITH(boostvector, 
+AC_ARG_WITH(boostvector,
 	AC_HELP_STRING([--with-boostvector], [default is no]),
 	[boostvector="yes"],
 	[boostvector="no"]
@@ -159,7 +179,7 @@ fi
 
 dnl Are we using eigen vectors ----------------------------------------
 AC_MSG_CHECKING([--with-eigenvector])
-AC_ARG_WITH(eigenvector, 
+AC_ARG_WITH(eigenvector,
 	AC_HELP_STRING([--with-eigenvector], [default is no]),
 	[eigenvector="yes"],
 	[eigenvector="no"]
@@ -179,7 +199,7 @@ fi
 
 dnl Are we using sparse_set or sparse_list ----------------------------
 AC_MSG_CHECKING([--with-sparse_set])
-AC_ARG_WITH(sparse_set, 
+AC_ARG_WITH(sparse_set,
 	AC_HELP_STRING([--with-sparse_set], [default is not specified]),
 	[sparse_set="yes"],
 	[sparse_set="no"]
@@ -187,7 +207,7 @@ AC_ARG_WITH(sparse_set,
 AC_MSG_RESULT([$sparse_set])
 dnl
 AC_MSG_CHECKING([--with-sparse_list])
-AC_ARG_WITH(sparse_list, 
+AC_ARG_WITH(sparse_list,
 	AC_HELP_STRING([--with-sparse_list], [default is not specified]),
 	[sparse_list="yes"],
 	[sparse_list="no"]
@@ -205,9 +225,9 @@ fi
 
 dnl Are we including an implicit constructor from any type -----------
 AC_MSG_CHECKING([--with-implicit_ctor])
-AC_ARG_WITH(implicit_ctor, 
+AC_ARG_WITH(implicit_ctor,
 	AC_HELP_STRING(
-		[--with-implicit_ctor], 
+		[--with-implicit_ctor],
 		[include an implicit AD<Base> constructor from any type]
 	),
 	[implicit_ctor="yes"],
@@ -222,7 +242,7 @@ fi
 
 dnl The postfix directiory corresponding to CppAD ------------------------
 AC_MSG_CHECKING([POSTFIX_DIR])
-AC_ARG_VAR(POSTFIX_DIR, 
+AC_ARG_VAR(POSTFIX_DIR,
 	[postfix directory for CppAD installation]
 )
 AM_CONDITIONAL(CppAD_POSTFIX, test "$POSTFIX_DIR" != "")
@@ -234,7 +254,7 @@ fi
 
 dnl The prefix corresponding to the installation of Adolc ---------------
 AC_MSG_CHECKING([ADOLC_DIR])
-AC_ARG_VAR(ADOLC_DIR, 
+AC_ARG_VAR(ADOLC_DIR,
 	[value of configure prefix directory during Adolc install]
 )
 AM_CONDITIONAL(CppAD_ADOLC, test "$ADOLC_DIR" != "")
@@ -249,7 +269,7 @@ fi
 
 dnl The prefix corresponding to the installation of Eigen ---------------
 AC_MSG_CHECKING([EIGEN_DIR])
-AC_ARG_VAR(EIGEN_DIR, 
+AC_ARG_VAR(EIGEN_DIR,
 	[value of configure prefix directory during Eigen install]
 )
 AM_CONDITIONAL(CppAD_EIGEN_DIR, test "$EIGEN_DIR" != "")
@@ -329,14 +349,14 @@ AC_ARG_VAR(CXX_FLAGS,
 )
 # cxx_flags for fadbad and eigen
 if test "$CXX_FLAGS" != "" ; then
-	AC_MSG_RESULT([$CXX_FLAGS]) 
+	AC_MSG_RESULT([$CXX_FLAGS])
 	cxx_flags_fadbad=`echo "$CXX_FLAGS" | sed -e 's|-Wshadow||'`
-	cxx_flags_eigen="$cxx_flags_fadbda -Wno-long-long" 
+	cxx_flags_eigen="$cxx_flags_fadbda -Wno-long-long"
 else
 	AC_MSG_RESULT([no])
 	cxx_flags_fadbad=""
 	cxx_flags_eigen=""
-fi 
+fi
 AC_SUBST(CXX_FLAGS_FADBAD, "$cxx_flags_fadbad")
 AC_SUBST(CXX_FLAGS_EIGEN,  "$cxx_flags_eigen")
 
@@ -346,10 +366,10 @@ AC_ARG_VAR(OPENMP_FLAGS,
 	[ flags that instruct compiler to interpret OpenMP directrives ]
 )
 if test "$OPENMP_FLAGS" != "" ; then
-	AC_MSG_RESULT([$OPENMP_FLAGS]) 
+	AC_MSG_RESULT([$OPENMP_FLAGS])
 else
 	AC_MSG_RESULT([no])
-fi 
+fi
 AM_CONDITIONAL(CppAD_OPENMP, test "$OPENMP_FLAGS" != "")
 
 dnl The compiler OpenMP flags MAX_NUM_THREADS -------------------------------
@@ -358,7 +378,7 @@ AC_ARG_VAR(MAX_NUM_THREADS,
 	[ maximum number of threads that can be used with CppAD ]
 )
 if test "$MAX_NUM_THREADS" != "" ; then
-	AC_MSG_RESULT([$MAX_NUM_THREADS]) 
+	AC_MSG_RESULT([$MAX_NUM_THREADS])
   	if test "$MAX_NUM_THREADS" -lt "4" ; then
 		AC_MSG_ERROR(
 			[ MAX_NUM_THREADS=$MAX_NUM_THREADS is less than 4 ]
@@ -368,7 +388,7 @@ if test "$MAX_NUM_THREADS" != "" ; then
 else
 	max_num_threads="48"
 	AC_MSG_RESULT([no, using default value $max_num_threads])
-fi 
+fi
 AC_SUBST(cppad_max_num_threads, [$max_num_threads])
 
 dnl type used for addresses in AD tapes [ default = unsigned int ] -----------
@@ -436,7 +456,49 @@ if test "$ok" == "no" ; then
 fi
 AC_MSG_NOTICE([********** End Checking Command Line arguments ***************])
 
-dnl auto-tools version does not support ColPack coloring 
+dnl Begin enable_msvc cases --------------------------------------------------
+dnl See AC_ARG(ENABLE([msvx] in command line arguments above
+
+dnl AC_PROG_CXX([compiler-search-list]) outputs CXX as C++ compiler to use
+if  test "$enable_msvc" = yes; then
+	dnl This case is defined and supported by Ted Ralphs
+	AC_PROG_CXX([cl icl g++])
+else
+	AC_PROG_CXX
+fi
+AC_MSG_CHECKING([whether using Microsoft C++ compiler])
+AM_CONDITIONAL(CppAD_MS_COMPILER, test "$CXX" == "cl" || test "$CXX" == "icl")
+if test "$CXX" == "cl" || test "$CXX" == "icl"; then
+	AC_MSG_RESULT([yes])
+else
+	AC_MSG_RESULT([no])
+fi
+dnl erase any setting of CXXFLAGS, see CXX_FLAGS documentation
+AC_SUBST(CXXFLAGS, "")
+
+dnl AC_PROG_CC([compiler-search-list]) outputs CC as C compiler to use
+if  test "$enable_msvc" = yes; then
+	dnl This case is defined and supported by Ted Ralphs
+	AC_PROG_CC([cl icl gcc])
+else
+	AC_PROG_CC
+fi
+dnl erase any setting of CFLAGS
+AC_SUBST(CFLAGS, "")
+
+dnl This was in Ted's changes, but I (Brad) do not think it is necessary
+dnl Because CppAD does not have any fortran. It may however be necessary for
+dnl proper setting by AC_FC_LIBRARY_LDFLAGS ?
+dnl AC_PROG_F77([compiler-search-list]) outputs F77 as Fortran compiler to use
+dnl if  test "$enable_msvc" = yes; then
+dnl 	dnl This case is defined and support by Ted Ralphs
+dnl	AC_PROG_F77([ifort gfortran])
+dnl fi
+
+dnl End enable_msvc cases ---------------------------------------------------
+
+
+dnl auto-tools version does not support ColPack coloring
 AC_SUBST(cppad_has_colpack, 0)
 
 dnl auto-tools version cannot use c++11 compiler
@@ -446,7 +508,7 @@ AC_SUBST(cppad_has_rvalue, 0)
 AC_SUBST(cppad_has_cstdint_8_to_64, 0)
 AC_SUBST(cppad_compiler_has_erf, 0)
 
-dnl Determine if size_t has same size as unsigned int 
+dnl Determine if size_t has same size as unsigned int
 AC_CHECK_SIZEOF([size_t])
 AC_CHECK_SIZEOF([unsigned int])
 if test "$ac_cv_sizeof_size_t" != "$ac_cv_sizeof_unsigned_int" ; then
@@ -458,7 +520,7 @@ fi
 dnl Determine which definition we are using for CPPAD_TESTVECTOR
 if test "$stdvector$boostvector$eigenvector" = "nonono" ; then
 	AC_SUBST(cppad_cppadvector, 1)
-else 
+else
 	AC_SUBST(cppad_cppadvector, 0)
 fi
 
@@ -474,34 +536,11 @@ else
 	AC_SUBST(cppad_has_gettimeofday, 0)
 fi
 
-dnl Run any macros required for proper operation of generated makefiles
-dnl nostdinc: Do not define standard include directories in generated makefiles
-AM_INIT_AUTOMAKE([nostdinc subdir-objects -Wall])
-
 dnl Use LIBTOOL for cppad_ipopt ?
 dnl AC_PROG_LIBTOOL
 
 dnl Determine if ranlib is present and where it is if present (set RANLIB)
 AC_PROG_RANLIB
-
-dnl AC_PROG_CXX([compiler-search-list]) outputs CXX as C++ compiler to use
-AC_PROG_CXX
-AC_MSG_CHECKING([whether using Microsoft C++ compiler])
-AM_CONDITIONAL(CppAD_MS_COMPILER, test "$CXX" == "cl" || test "$CXX" == "icl")
-if test "$CXX" == "cl" || test "$CXX" == "icl"; then
-	AC_MSG_RESULT([yes])
-else
-	AC_MSG_RESULT([no])
-fi
-dnl erase any setting of CXXFLAGS, see CXX_FLAGS documentation
-AC_SUBST(CXXFLAGS, "")
-
-
-dnl AC_PROG_CC([compiler-search-list]) outputs CC as C++ compiler to use
-AC_PROG_CC
-AC_MSG_CHECKING([whether using Microsoft C++ compiler])
-dnl erase any setting of CFLAGS
-AC_SUBST(CFLAGS, "")
 
 dnl Have configure check source directory to see if cppad/CppAD.h is there
 AC_CONFIG_SRCDIR(cppad/CppAD.h)
@@ -721,18 +760,18 @@ AC_SUBST(cppad_pkgconfig_cflags,   "$cppad_pkgconfig_cflags_value")
 AC_SUBST(cppad_pkgconfig_libs,     "$cppad_pkgconfig_libs_value")
 AC_SUBST(cppad_pkgconfig_requires, "$cppad_pkgconfig_requires_value")
 dnl
-dnl names set here so cppad.pc-uninstalled works both with cmake and autoconf 
+dnl names set here so cppad.pc-uninstalled works both with cmake and autoconf
 AC_SUBST(cppad_SOURCE_DIR,  ${ABS_TOP_SRCDIR} )
 dnl
-dnl names set here so */test_one.sh.in works both with cmake and autoconf 
+dnl names set here so */test_one.sh.in works both with cmake and autoconf
 AC_SUBST(adolc_prefix,      ${ADOLC_DIR} )
 AC_SUBST(eigen_prefix,      ${EIGEN_DIR} )
 AC_SUBST(ipopt_prefix,      ${IPOPT_DIR} )
 dnl
 dnl -----------------------------------------------------------------------
-dnl AC_CONFIG_FILES(file-list) for each file in the list, configure will 
+dnl AC_CONFIG_FILES(file-list) for each file in the list, configure will
 dnl read file.in, do its substitutions, and create file
-AC_CONFIG_FILES([ 
+AC_CONFIG_FILES([
 	cppad/configure.hpp
 	cppad_ipopt/example/test.sh
 	cppad_ipopt/speed/test.sh
@@ -744,31 +783,31 @@ AC_CONFIG_FILES([
 	test_more/test_one.sh
 
 	makefile
-	compare_c/makefile 
+	compare_c/makefile
 	cppad_ipopt/src/makefile
 	cppad_ipopt/example/makefile
 	cppad_ipopt/speed/makefile
 	cppad_ipopt/test/makefile
-	example/makefile 
-	example/atomic/makefile 
-	example/ipopt_solve/makefile 
-	introduction/get_started/makefile 
+	example/makefile
+	example/atomic/makefile
+	example/ipopt_solve/makefile
+	introduction/get_started/makefile
 	introduction/exp_apx/makefile
 	multi_thread/makefile
 	multi_thread/test_multi/makefile
 	print_for/makefile
 	speed/adolc/makefile
-	speed/cppad/makefile 
-	speed/double/makefile 
+	speed/cppad/makefile
+	speed/double/makefile
 	speed/example/makefile
 	speed/fadbad/makefile
 	speed/profile/makefile
 	speed/profile/gprof.sed
 	speed/sacado/makefile
 	speed/src/makefile
-	test_more/makefile 
+	test_more/makefile
 ])
-dnl END AC_CONFIG_FILES 
+dnl END AC_CONFIG_FILES
 dnl the comment line above is used by ./new_stable.sh
 
 AC_CONFIG_COMMANDS(

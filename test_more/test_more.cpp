@@ -3,7 +3,7 @@
 CppAD: C++ Algorithmic Differentiation: Copyright (C) 2003-15 Bradley M. Bell
 
 CppAD is distributed under multiple licenses. This distribution is under
-the terms of the 
+the terms of the
                     Eclipse Public License Version 1.0.
 
 A copy of this license is included in the COPYING file of this distribution.
@@ -44,7 +44,7 @@ extern bool dbl_epsilon(void);
 extern bool Div(void);
 extern bool DivEq(void);
 extern bool DivZeroOne(void);
-extern bool Erf(void);
+extern bool erf(void);
 extern bool Exp(void);
 extern bool ForHess(void);
 extern bool for_sparse_jac(void);
@@ -104,7 +104,7 @@ namespace {
 	static size_t Run_error_count = 0;
 	bool Run(bool TestOk(void), std::string name)
 	{	bool ok               = true;
-		std::streamsize width =  20;         
+		std::streamsize width =  20;
 		std::cout.width( width );
 		std::cout.setf( std::ios_base::left );
 		std::cout << name;
@@ -128,7 +128,7 @@ int main(void)
 {	bool ok = true;
 	using namespace std;
 
-	// This line is used by test_one.sh 
+	// This line is used by test_one.sh
 
 	// run external compiled tests (this line expected by bin/new_test.sh)
 	ok &= Run( abs,             "abs"            );
@@ -154,7 +154,7 @@ int main(void)
 	ok &= Run( Div,             "Div"            );
 	ok &= Run( DivEq,           "DivEq"          );
 	ok &= Run( DivZeroOne,      "DivZeroOne"     );
-	ok &= Run( Erf,             "Erf"            );
+	ok &= Run( erf,             "erf"            );
 	ok &= Run( Exp,             "Exp"            );
 	ok &= Run( ForHess,         "ForHess"        );
 	ok &= Run( for_sparse_jac,  "for_sparse_jac" );

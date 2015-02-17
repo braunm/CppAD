@@ -3,7 +3,7 @@
 CppAD: C++ Algorithmic Differentiation: Copyright (C) 2003-15 Bradley M. Bell
 
 CppAD is distributed under multiple licenses. This distribution is under
-the terms of the 
+the terms of the
                     Eclipse Public License Version 1.0.
 
 A copy of this license is included in the COPYING file of this distribution.
@@ -163,6 +163,7 @@ extern bool Sqrt(void);
 extern bool StackMachine(void);
 extern bool Sub(void);
 extern bool SubEq(void);
+extern bool sub_sparse_hes(void);
 extern bool Tan(void);
 extern bool Tanh(void);
 extern bool TapeIndex(void);
@@ -180,7 +181,7 @@ namespace {
 	static size_t Run_error_count = 0;
 	bool Run(bool TestOk(void), std::string name)
 	{	bool ok      = true;
-		std::streamsize width =  20;         
+		std::streamsize width =  20;
 		std::cout.width( width );
 		std::cout.setf( std::ios_base::left );
 		std::cout << name;
@@ -243,9 +244,9 @@ int main(void)
 	ok &= Run( Exp,               "Exp"              );
 	ok &= Run( ForOne,            "ForOne"           );
 	ok &= Run( ForTwo,            "ForTwo"           );
-	ok &= Run( Forward,           "Forward"          ); 
-	ok &= Run( forward_dir,       "forward_dir"      ); 
-	ok &= Run( forward_order,     "forward_order"    ); 
+	ok &= Run( Forward,           "Forward"          );
+	ok &= Run( forward_dir,       "forward_dir"      );
+	ok &= Run( forward_order,     "forward_order"    );
 	ok &= Run( ForSparseJac,      "ForSparseJac"     );
 	ok &= Run( fun_assign,        "fun_assign"       );
 	ok &= Run( FunCheck,          "FunCheck"         );
@@ -317,6 +318,7 @@ int main(void)
 	ok &= Run( StackMachine,      "StackMachine"     );
 	ok &= Run( Sub,               "Sub"              );
 	ok &= Run( SubEq,             "SubEq"            );
+	ok &= Run( sub_sparse_hes,    "sub_sparse_hes"   );
 	ok &= Run( Tan,               "Tan"              );
 	ok &= Run( Tanh,              "Tanh"             );
 	ok &= Run( TapeIndex,         "TapeIndex"        );
